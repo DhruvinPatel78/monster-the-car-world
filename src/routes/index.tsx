@@ -98,10 +98,10 @@ function Index() {
       <section className="border-y border-border/50 bg-card/40 backdrop-blur">
         <div className="mx-auto max-w-7xl px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
-            ["1000+", "Cars Modified"],
-            ["5.0★", "Google Rated"],
-            ["100+", "Verified Reviews"],
-            ["10+", "Years of Craft"],
+            ["200+", "PPF"],
+            ["50+", "Color PPF"],
+            ["100+", "Ceramic Coating"],
+            ["10+", "Custom Interior"],
           ].map(([n, l]) => (
             <div key={l}>
               <div className="text-display text-5xl text-ember">{n}</div>
