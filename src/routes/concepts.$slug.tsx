@@ -1,5 +1,14 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { concepts, getConcept, type Concept } from "@/lib/concepts";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 
 export const Route = createFileRoute("/concepts/$slug")({
   loader: ({ params }) => {
@@ -33,6 +42,80 @@ export const Route = createFileRoute("/concepts/$slug")({
     </div>
   ),
 });
+
+function ConceptGallery({ images, title }: { images: string[]; title: string }) {
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => setCurrent(api.selectedScrollSnap());
+    onSelect();
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
+    };
+  }, [api]);
+
+  return (
+    <Carousel setApi={setApi} opts={{ loop: true }} className="w-full">
+      <CarouselContent className="-ml-0">
+        {images.map((src, i) => (
+          <CarouselItem key={i} className="pl-0">
+            <div className="overflow-hidden rounded-xl border border-border/60 aspect-[4/3] bg-card shadow-card">
+              <img
+                src={src}
+                alt={`${title} — view ${i + 1}`}
+                loading={i === 0 ? "eager" : "lazy"}
+                decoding="async"
+                width={1600}
+                height={1200}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious className="left-4 top-1/2 h-10 w-10 -translate-y-1/2 border-border/60 bg-background/80 hover:bg-background" />
+      <CarouselNext className="right-4 top-1/2 h-10 w-10 -translate-y-1/2 border-border/60 bg-background/80 hover:bg-background" />
+      <div className="mt-5 flex justify-center overflow-x-auto pb-1">
+        <div className="flex gap-3">
+        {images.map((src, i) => (
+          <button
+            key={i}
+            type="button"
+            aria-label={`View ${title} — shot ${i + 1}`}
+            aria-current={i === current ? "true" : undefined}
+            onClick={() => api?.scrollTo(i)}
+            className={`shrink-0 overflow-hidden rounded-lg border-2 transition ${
+              i === current
+                ? "border-ember opacity-100 ring-2 ring-ember/30"
+                : "border-border/60 opacity-60 hover:opacity-100 hover:border-border"
+            }`}
+          >
+            <img
+              src={src}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              width={160}
+              height={120}
+              className="aspect-[4/3] h-16 w-24 object-cover md:h-20 md:w-28"
+            />
+          </button>
+        ))}
+        </div>
+      </div>
+      <p className="mt-3 text-center text-xs uppercase tracking-widest text-muted-foreground">
+        {current + 1} / {images.length}
+      </p>
+    </Carousel>
+  );
+}
 
 function ConceptDetail() {
   const { concept } = Route.useLoaderData() as { concept: Concept };
@@ -79,15 +162,8 @@ function ConceptDetail() {
           <h2 className="text-display text-4xl md:text-5xl">Gallery</h2>
           <span className="text-xs uppercase tracking-widest text-muted-foreground">{concept.images.length} shots</span>
         </div>
-        <div className="mt-8 grid md:grid-cols-6 gap-4">
-          {concept.images.map((src, i) => (
-            <div
-              key={i}
-              className={`overflow-hidden rounded-xl border border-border/60 ${i === 0 ? "md:col-span-4 md:row-span-2 aspect-[4/3]" : "md:col-span-2 aspect-square"}`}
-            >
-              <img src={src} alt={`${concept.title} — view ${i + 1}`} loading="lazy" decoding="async" width={1024} height={1024} className="w-full h-full object-cover hover:scale-105 transition duration-700" />
-            </div>
-          ))}
+        <div className="mt-8">
+          <ConceptGallery images={concept.images} title={concept.title} />
         </div>
       </section>
 

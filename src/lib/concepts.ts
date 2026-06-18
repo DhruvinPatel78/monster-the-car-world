@@ -1,13 +1,14 @@
-import stealth1 from "@/assets/concept-stealth-1.jpg";
-import stealth2 from "@/assets/concept-stealth-2.jpg";
-import stealth3 from "@/assets/concept-stealth-3.jpg";
+import baleno1 from "@/assets/baleno-1.jpg";
+import baleno2 from "@/assets/baleno-2.jpg";
+import baleno3 from "@/assets/baleno-3.jpg";
+import baleno4 from "@/assets/baleno-4.jpg";
 import crimson1 from "@/assets/concept-crimson-1.jpg";
 import crimson2 from "@/assets/concept-crimson-2.jpg";
 import crimson3 from "@/assets/concept-crimson-3.jpg";
 import urban1 from "@/assets/concept-urban-1.jpg";
 import urban2 from "@/assets/concept-urban-2.jpg";
 import urban3 from "@/assets/concept-urban-3.jpg";
-import stealthVid from "@/assets/concept-stealth.mp4";
+import balenoVid from "@/assets/baleno.mp4";
 import crimsonVid from "@/assets/concept-crimson.mp4";
 import urbanVid from "@/assets/concept-urban.mp4";
 
@@ -24,14 +25,14 @@ export type Concept = {
 
 export const concepts: Concept[] = [
   {
-    slug: "stealth-black-series",
-    title: "Stealth Black Series",
-    tagline: "Shadows that move at 200 km/h.",
+    slug: "badass-baleno",
+    title: "Badass Baleno",
+    tagline: "Shadows with colors",
     description:
       "Murdered-out paint, blacked-out wheels and a stance that doesn't blink. The Stealth Series is for buyers who believe attention should be earned, not chased.",
-    cover: stealth1,
-    video: stealthVid,
-    images: [stealth1, stealth2, stealth3],
+    cover: baleno1,
+    video: balenoVid,
+    images: [baleno1, baleno2, baleno3, baleno4],
     specs: [
       { label: "Finish", value: "Matte Black PPF" },
       { label: "Wheels", value: '20" Forged Dark' },
